@@ -34,11 +34,19 @@ public void kill(int theValue) {
   bus.sendControllerChange(1, 120, 100); // Send a controllerChange
 }
 
+// DOES NOT CURRENTLY WORK WITH DROPDOWN.
 void controlEvent(ControlEvent theEvent) {
+  println(theEvent.getController().toString());
+  println(theEvent.getController().toString().equals("select key [ListBox]"));
+  
   // Detect key menu dropdown changes.
-  if (theEvent.isGroup()) {
-    // check if the Event was triggered from a ControlGroup
-    println("event from group : "+theEvent.getGroup().getValue()+" from "+theEvent.getGroup());
+  if (theEvent.isController() && theEvent.getController().toString().equals("select key [ListBox]")) {
+    println("event from controller : " + theEvent.getController().getValue() + " from "+theEvent.getController());
+    println(theEvent.getGroup().getValue());
+    println(int(theEvent.getGroup().getValue()));
+    // Change Key indicator text.
+    String newKey = getKey(int(theEvent.getGroup().getValue()));
+    currentKeyLabel.setText("KEY: " + newKey);
   }
 }
 
@@ -67,6 +75,7 @@ void setupGUI() {
     .setColorBackground(color(0,60,100))
     ;
     
+  /*
   keyList = cp5.addListBox("select key")
    .setPosition(100, 140)
    .setSize(120, 140)
@@ -83,9 +92,47 @@ void setupGUI() {
   keyList.addItem("D#", 3);
   keyList.addItem("E", 4);
   keyList.addItem("F", 5);
+  keyList.addItem("F#", 6);
+  keyList.addItem("G", 7);
+  keyList.addItem("G#", 8);
+  keyList.addItem("A", 9);
+  keyList.addItem("A#", 10);
+  keyList.addItem("B", 11);
   
   currentKeyLabel = cp5.addTextlabel("keyLabel")
     .setText("KEY: C")
     .setPosition(100,120)
     ;
+  */
+}
+
+String getKey(int keyValue) {
+  switch(keyValue) {
+    case 0: 
+      return "C";
+    case 1: 
+      return "C#";
+    case 2: 
+      return "D";
+    case 3: 
+      return "D#";
+    case 4: 
+      return "E";
+    case 5: 
+      return "F";
+    case 6: 
+      return "F#";
+    case 7: 
+      return "G";
+    case 8: 
+      return "G#";
+    case 9: 
+      return "A";
+    case 10: 
+      return "A#";
+    case 11: 
+      return "B";
+    default:
+      return "??";
+  }
 }

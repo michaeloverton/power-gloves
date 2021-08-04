@@ -51,10 +51,11 @@ void serialEvent (Serial port) {
     String items[] = split(data, '/');
     if (items.length > 1) {
       // Get roll and pitch in degrees.
-      roll = float(items[0]);
-      pitch = float(items[1]);
-      
-      if (port == leftPort) { // Left hand note trigger.
+      String hand = items[0]; // R or L - which hand this accelerometer corresponds to.
+      roll = float(items[1]);
+      pitch = float(items[2]);
+            
+      if (hand.equals("L")) { // Left hand note trigger.
         if (debugMode) {
           println("LEFT PORT: roll:"+roll+", pitch:"+pitch);
         }

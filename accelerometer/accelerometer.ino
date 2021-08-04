@@ -26,12 +26,18 @@ void loop() {
   Y_out = Y_out / 256;
   Z_out = ( Wire.read() | Wire.read() << 8); // Z-axis value
   Z_out = Z_out / 256;
+  
   // Calculate Roll and Pitch (rotation around X-axis, rotation around Y-axis)
   roll = atan(Y_out / sqrt(pow(X_out, 2) + pow(Z_out, 2))) * 180 / PI;
   pitch = atan(-1 * X_out / sqrt(pow(Y_out, 2) + pow(Z_out, 2))) * 180 / PI;
+  
   // Low-pass filter
   rollF = 0.94 * rollF + 0.06 * roll;
   pitchF = 0.94 * pitchF + 0.06 * pitch;
+
+  // Print to Serial out.
+  Serial.print("L"); // Right or left hand? Processing reads this. Change as needed.
+  Serial.print("/");
   Serial.print(rollF);
   Serial.print("/");
   Serial.println(pitchF);
