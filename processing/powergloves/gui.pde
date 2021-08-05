@@ -34,6 +34,23 @@ public void kill(int theValue) {
   bus.sendControllerChange(1, 120, 100); // Send a controllerChange
 }
 
+// Quit the program. Stop serial processing.
+public void quit(int theValue) {
+  // Kill all MIDI.
+  bus.sendControllerChange(1, 120, 100);
+  
+  // Clear the buffers, or available() will still be > 0.
+  leftPort.clear();
+  rightPort.clear();
+  
+  // Close the ports
+  leftPort.stop();
+  rightPort.stop();
+      
+  // Exit the program.
+  exit();
+}
+
 // DOES NOT CURRENTLY WORK WITH DROPDOWN.
 void controlEvent(ControlEvent theEvent) {
   println(theEvent.getController().toString());
@@ -66,11 +83,17 @@ void setupGUI() {
   debugButton = cp5.addButton("debug")
     .setPosition(100,25)
     .setSize(200,19)
-    .setColorBackground(color(0,160,100))
+    .setColorBackground(color(0,60,100))
     ;
   // Kill switch for cutting MIDI.
-  cp5.addButton("kill")
+  cp5.addButton("kill midi")
     .setPosition(100,50)
+    .setSize(200,19)
+    .setColorBackground(color(0,60,100))
+    ;
+  // Quit program.
+  cp5.addButton("quit")
+    .setPosition(100,75)
     .setSize(200,19)
     .setColorBackground(color(0,60,100))
     ;

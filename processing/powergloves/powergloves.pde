@@ -9,20 +9,21 @@ Serial leftPort;
 Serial rightPort;
 String data="";
 float roll, pitch;
+int BAUD = 19200;
 
 // Master controls.
 boolean makeSound = true;
-boolean debugMode = true;
+boolean debugMode = false;
 
 void setup() {
   // List all the available serial ports:
   printArray(Serial.list());
 
-  // Open the ports at 9600 BAUD (BAUD set in Arduino).
-  leftPort = new Serial(this, "/dev/cu.usbserial-AB0L9VBG", 9600);
+  // Open the ports at given BAUD (BAUD set in Arduino).
+  leftPort = new Serial(this, "/dev/cu.usbserial-AB0L9VBG", BAUD);
   leftPort.bufferUntil('\n');
     
-  rightPort = new Serial(this, "/dev/cu.usbserial-AB0L9FSK", 9600);
+  rightPort = new Serial(this, "/dev/cu.usbserial-AB0L9FSK", BAUD);
   rightPort.bufferUntil('\n');
     
   // Set up MIDI.
@@ -64,9 +65,11 @@ void serialEvent (Serial port) {
           noteOn = true;
           bus.sendNoteOn(1, note, 100);
           notesOn.add(note);
+          println("note on");
         } else if (pitch <= 0 && noteOn) {
           killNotes();
           noteOn = false;
+          println("note off");
         }
       }
       else { // Right hand note/chord select.
@@ -74,12 +77,10 @@ void serialEvent (Serial port) {
           println("RIGHT PORT: roll:"+roll+", pitch:"+pitch);
         }
         
-        // Reverse the pitch so that we choose low notes when pointing down.
-//        int reversedPitch = -1 *(180 - (int(pitch) + 90));
-        
         // Determine note.
-        int noteIndex = (int(pitch) + 90)/4;
-//        int noteIndex = reversedPitch/4;
+        // Reverse the pitch so that we choose low notes when pointing down.
+        int noteIndex = (180-(int(pitch) + 90))/12;
+//        int noteIndex = (int(pitch) + 90)/12;
         note = keyNotes.get(noteIndex);
       }
       

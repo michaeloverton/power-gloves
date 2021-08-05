@@ -1,9 +1,11 @@
 #include <Wire.h>  // Wire library - used for I2C communication
 int ADXL345 = 0x53; // The ADXL345 sensor I2C address
 float X_out, Y_out, Z_out;  // Outputs
-float roll,pitch,rollF,pitchF=0;
+float roll, pitch, rollF, pitchF=0;
+long BAUD = 19200;
+
 void setup() {
-  Serial.begin(9600); // Initiate serial communication for printing the results on the Serial monitor
+  Serial.begin(BAUD); // Initiate serial communication for printing the results on the Serial monitor
  
   Wire.begin(); // Initiate the Wire library
   // Set ADXL345 in measuring mode
@@ -14,6 +16,7 @@ void setup() {
   Wire.endTransmission();
   delay(10);
 }
+
 void loop() {
   // === Read acceleromter data === //
   Wire.beginTransmission(ADXL345);
@@ -36,7 +39,7 @@ void loop() {
   pitchF = 0.94 * pitchF + 0.06 * pitch;
 
   // Print to Serial out.
-  Serial.print("L"); // Right or left hand? Processing reads this. Change as needed.
+  Serial.print("R"); // Right or left hand? Processing reads this. Change as needed.
   Serial.print("/");
   Serial.print(rollF);
   Serial.print("/");
