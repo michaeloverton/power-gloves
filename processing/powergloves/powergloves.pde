@@ -20,11 +20,11 @@ void setup() {
   printArray(Serial.list());
 
   // Open the ports at given BAUD (BAUD set in Arduino).
-  leftPort = new Serial(this, "/dev/cu.usbserial-AB0L9VBG", BAUD);
-  leftPort.bufferUntil('\n');
-    
-  rightPort = new Serial(this, "/dev/cu.usbserial-AB0L9FSK", BAUD);
-  rightPort.bufferUntil('\n');
+//  leftPort = new Serial(this, "/dev/cu.usbserial-AB0L9VBG", BAUD);
+//  leftPort.bufferUntil('\n');
+//    
+//  rightPort = new Serial(this, "/dev/cu.usbserial-AB0L9FSK", BAUD);
+//  rightPort.bufferUntil('\n');
     
   // Set up MIDI.
   // MidiBus.list();
