@@ -1,4 +1,10 @@
 .App {
   text-align: center;
-  width: 400px;
+  width: 600px;
+}
+
+body {
+  background-color: #282c34;
+  color: white;
+  font-family: "Courier New", Courier, monospace;
 }
